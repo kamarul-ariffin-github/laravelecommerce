@@ -18,7 +18,7 @@ class Order extends Model
         'currency',
         'shipping_amount',
         'shipping_method',
-        'noted',
+        'notes',
     ];
 
     public function user()
