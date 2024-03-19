@@ -7,12 +7,14 @@ use App\Filament\Resources\UserResource\RelationManagers;
 use App\Filament\Resources\UserResource\RelationManagers\OrdersRelationManager;
 use App\Models\User;
 use Filament\Forms;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Pages\Page;
 use Filament\Resources\Pages\CreateRecord;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -47,8 +49,16 @@ class UserResource extends Resource
 
                 Forms\Components\TextInput::make('password')
                     ->password()
-                    ->dehydrated(fn($state) => filled($state))
-                    ->required(fn(Page $livewire): bool => $livewire instanceof CreateRecord),
+                    ->dehydrated(fn ($state) => filled($state))
+                    ->required(fn (Page $livewire): bool => $livewire instanceof CreateRecord),
+
+                Select::make('user_type')
+                    ->options([
+                        'user' => 'User',
+                        'admin' => 'Admin',
+                    ])
+                    ->default('user')
+                    ->required(),
             ]);
     }
 
@@ -66,10 +76,18 @@ class UserResource extends Resource
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('user_type')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
 
             ])
             ->filters([
-                //
+                SelectFilter::make('user_type')
+                    ->options([
+                        'admin' => 'Admin',
+                        'user' => 'User',
+                    ])
+                    ->label('User Type')
             ])
             ->actions([
                 Tables\Actions\ActionGroup::make([

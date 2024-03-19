@@ -6,6 +6,7 @@ use App\Mail\AccountRegistered;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Session;
 use Livewire\Component;
 
 class RegisterPage extends Component
@@ -36,9 +37,10 @@ class RegisterPage extends Component
         Auth::login($user);
 
         // Redirect to a page after registration
-        return $this->redirect('/', navigate: true);
+        $url = Session::pull('url.intended', '/');
+        return $this->redirect($url, navigate: true);
     }
-    
+
     public function render()
     {
         return view('livewire.auth.register-page');

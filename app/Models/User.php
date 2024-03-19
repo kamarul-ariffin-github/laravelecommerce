@@ -3,14 +3,21 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use Filament\Panel;
+use Filament\Models\Contracts\FilamentUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable
+class User extends Authenticatable implements FilamentUser
 {
     use HasApiTokens, HasFactory, Notifiable;
+
+    public function canAccessPanel(Panel $panel): bool{
+        return $this->isAdmin();
+    }
 
     /**
      * The attributes that are mass assignable.
@@ -51,6 +58,8 @@ class User extends Authenticatable
     }
 
     public function isAdmin(){
-        return $this->user_type === 'admin';
+        return $this->user_type == 'admin';
     }
+
+    
 }

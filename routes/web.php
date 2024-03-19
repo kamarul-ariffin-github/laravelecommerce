@@ -48,5 +48,5 @@ Route::get('/register', RegisterPage::class);
 Route::get('/forgot', ForgotPasswordPage::class)->middleware('guest');
 Route::get('/reset-password/{token}', ResetPasswordPage::class)->middleware('guest')->name('password.reset');
 
-Route::get('/success/{order}', SuccessPage::class);
-Route::get('/cancel/{order}', CancelPage::class);
+Route::get('/success/{order}', SuccessPage::class)->name('success');
+Route::get('/cancel/{order}', CancelPage::class)->name('cancel');
