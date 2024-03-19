@@ -50,6 +50,54 @@ class CheckoutPage extends Component
             'payment_method' => 'required|string|max:255',
         ]);
 
+        if ($this->payment_method == 'cod') {
+            $order = $this->createOrder('pending');
+
+            return $this->redirect('/success/' . $order->id, navigate: true);
+        } else {
+            $lineItems = [];
+
+            foreach ($this->cart_items as $item) {
+                $lineItems[] = [
+                    'price_data' => [
+                        'currency' => 'myr',
+                        'product_data' => [
+                            'name' => $item['name'],
+                        ],
+                        'unit_amount' => $item['unit_amount'] * 100, // Price in cents
+                    ],
+                    'quantity' => $item['quantity'],
+                ];
+            }
+
+            try {
+                \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+                $order = $this->createOrder('paid');
+
+                $checkout_session = \Stripe\Checkout\Session::create([
+                    'line_items' => $lineItems,
+                    'mode' => 'payment',
+                    'success_url' => 'http://127.0.0.1:8000/success/' . $order->id,
+                    'cancel_url' => 'http://127.0.0.1:8000/cancel',
+                ]);
+
+
+                return redirect($checkout_session->url, 303);
+            } catch (\Throwable $th) {
+                $this->alert('error', 'Payment unsuccessful, please try again!', [
+                    'position' => 'bottom-end',
+                    'timer' => 3000,
+                    'toast' => true,
+                    'timerProgressBar' => true,
+                    'text' => '',
+                ]);
+            }
+        }
+    }
+
+    public function createOrder($payment_status)
+    {
+
         //create order
         $order = new Order();
         $order->user_id = Auth::id();
@@ -57,7 +105,7 @@ class CheckoutPage extends Component
         $order->payment_method = $this->payment_method;
         $order->currency = 'MYR';
         $order->status = 'new';
-        $order->payment_status = 'pending';
+        $order->payment_status = $payment_status;
         $order->shipping_amount = 0;
         // $order->shipping_method = 'jnt';
         $order->notes = '';
@@ -101,6 +149,6 @@ class CheckoutPage extends Component
             'text' => '',
         ]);
 
-        return $this->redirect('/success/' . $order->id, navigate: true);
+        return $order;
     }
 }

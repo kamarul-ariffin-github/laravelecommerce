@@ -51,6 +51,8 @@
               Cash On Delivery
               @elseif ($order->payment_method == 'duitnow')
               DuitNow
+              @elseif ($order->payment_method == 'stripe')
+              Stripe
               @endif
             </p>
           </div>

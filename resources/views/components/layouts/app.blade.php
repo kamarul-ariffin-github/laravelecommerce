@@ -7,6 +7,7 @@
         <title>{{ $title ?? 'eCommerce' }}</title>
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         @livewireStyles
+        <script src="https://js.stripe.com/v3/"></script>
     </head>
     <body class="bg-slate-200 dark:bg-slate-700">
         @livewire('partials.navbar')

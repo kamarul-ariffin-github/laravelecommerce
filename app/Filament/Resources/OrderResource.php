@@ -58,6 +58,7 @@ class OrderResource extends Resource
                             ->options([
                                 'duitnow' => 'DuitNow',
                                 'cod' => 'Cash On Delivery',
+                                'stripe' => 'Stripe',
                             ])
                             ->required(),
 
