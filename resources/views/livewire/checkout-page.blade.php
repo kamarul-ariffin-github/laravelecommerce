@@ -167,8 +167,10 @@
 					</div>
 					</hr>
 				</div>
-				<button type="submit"
-					class="bg-green-500 mt-4 w-full p-3 rounded-lg text-lg text-white hover:bg-green-600">
+				<button type="submit" wire:loading.attr="disabled"
+					class="bg-green-500 mt-4 w-full p-3 rounded-lg text-lg text-white hover:bg-green-600 disabled:opacity-50 disabled:pointer-events-none">
+					<span wire:loading wire:target="placeOrder"
+                  class="h-4 w-4 border-t-2 border-r-2 border-blue-500 rounded-full animate-spin"></span>
 					Place Order
 				</button>
 				<div class="bg-white mt-4 rounded-xl shadow p-4 sm:p-7 dark:bg-slate-900">
@@ -181,7 +183,7 @@
 							<div class="flex items-center">
 								<div class="flex-shrink-0">
 									<img alt="{{$item['name']}}" class="w-12 h-12 rounded-full"
-										src="{{url('storage',$item['image'])}}">
+										src="{{url('storage', $item['image'])}}">
 									</img>
 								</div>
 								<div class="flex-1 min-w-0 ms-4">
@@ -189,7 +191,7 @@
 										{{$item['name']}}
 									</p>
 									<p class="text-sm text-gray-500 truncate dark:text-gray-400">
-										Price: {{Number::currency($item['unit_amount'],'MYR')}}
+										Price: {{Number::currency($item['unit_amount'], 'MYR')}}
 									</p>
 									<p class="text-sm text-gray-500 truncate dark:text-gray-400">
 										Quantity: {{$item['quantity']}}

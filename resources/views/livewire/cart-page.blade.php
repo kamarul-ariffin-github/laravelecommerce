@@ -72,7 +72,7 @@
             <span class="font-semibold">{{Number::currency($grand_total, 'MYR')}}</span>
           </div>
           @if ($cart_items)
-          <a wire:navigate href="/checkout" class="block bg-blue-500 text-white py-2 px-4 rounded-lg mt-4 w-full text-center">Checkout</a>
+          <a wire:navigate href="/checkout" class="block bg-blue-500 text-white py-2 px-4 rounded-lg mt-4 w-full text-center disabled:opacity-50 disabled:pointer-events-none">Checkout</a>
           @endif
         </div>
       </div>

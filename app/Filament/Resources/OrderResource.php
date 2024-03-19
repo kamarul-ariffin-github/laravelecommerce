@@ -98,11 +98,11 @@ class OrderResource extends Resource
 
                         Select::make('currency')
                             ->options([
-                                'myr' => 'MYR',
-                                'usd' => 'USD',
-                                'eur' => 'EUR',
+                                'MYR' => 'MYR',
+                                'USD' => 'USD',
+                                'EUR' => 'EUR',
                             ])
-                            ->default('myr')
+                            ->default('MYR')
                             ->required(),
 
                         Select::make('shipping_method')

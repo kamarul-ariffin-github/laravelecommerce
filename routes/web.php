@@ -45,8 +45,8 @@ Route::get('/my-orders/{order}', MyOrderDetailPage::class); */
 
 Route::get('/login', LoginPage::class)->name('login');
 Route::get('/register', RegisterPage::class);
-Route::get('/forgot', ForgotPasswordPage::class);
-Route::get('/reset', ResetPasswordPage::class);
+Route::get('/forgot', ForgotPasswordPage::class)->middleware('guest');
+Route::get('/reset-password/{token}', ResetPasswordPage::class)->middleware('guest')->name('password.reset');
 
 Route::get('/success/{order}', SuccessPage::class);
 Route::get('/cancel/{order}', CancelPage::class);

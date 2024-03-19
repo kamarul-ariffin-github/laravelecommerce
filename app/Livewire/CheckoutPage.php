@@ -10,9 +10,11 @@ use App\Models\OrderItem;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Livewire\Component;
+use Jantinnerezo\LivewireAlert\LivewireAlert;
 
 class CheckoutPage extends Component
 {
+    use LivewireAlert;
     public $first_name;
     public $last_name;
     public $phone;
@@ -53,11 +55,11 @@ class CheckoutPage extends Component
         $order->user_id = Auth::id();
         $order->grand_total = $this->grand_total;
         $order->payment_method = $this->payment_method;
-        $order->currency = 'MYR'; 
-        $order->status = 'new'; 
-        $order->payment_status = 'pending'; 
-        $order->shipping_amount = 0; 
-        $order->shipping_method = 'jnt'; 
+        $order->currency = 'MYR';
+        $order->status = 'new';
+        $order->payment_status = 'pending';
+        $order->shipping_amount = 0;
+        // $order->shipping_method = 'jnt';
         $order->notes = '';
         $order->save();
 
@@ -86,9 +88,19 @@ class CheckoutPage extends Component
 
         // Clear the cart after placing the order
         CartManagement::clearCartItems();
+
+        //mails
         $url = 'http://127.0.0.1:8000/my-orders/' . $order->id;
         Mail::to(Auth::user()->email)->send(new OrderCreated($order, $url));
 
-        return $this->redirect('/success/'.$order->id, navigate: true);
+        $this->flash('success', 'Order created successfully, please check your email!', [
+            'position' => 'bottom-end',
+            'timer' => 3000,
+            'toast' => true,
+            'timerProgressBar' => true,
+            'text' => '',
+        ]);
+
+        return $this->redirect('/success/' . $order->id, navigate: true);
     }
 }

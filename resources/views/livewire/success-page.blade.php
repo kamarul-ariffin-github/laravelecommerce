@@ -102,13 +102,7 @@
                   </div>
                 </div>
                 <p class="text-lg font-semibold leading-6 text-gray-800 dark:text-gray-400">
-                  @if ($order->shipping_method == 'jnt')
-                  J&T Express
-                  @elseif ($order->shipping_method == 'posmalaysia')
-                  Pos Malaysia
-                  @else
-                  Others
-                  @endif
+                  {{Number::currency(0,'MYR')}} 
                 </p>
               </div>
             </div>
