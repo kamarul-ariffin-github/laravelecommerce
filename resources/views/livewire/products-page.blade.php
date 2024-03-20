@@ -77,7 +77,7 @@
                 </div>
               </div>
             </div>
-            <div class="flex flex-wrap items-center ">
+            <div class="flex flex-wrap items-baseline ">
 
               @foreach ($products as $product)
               <div wire:key='{{$product->id}}' class="w-full px-3 mb-6 sm:w-1/2 md:w-1/3">

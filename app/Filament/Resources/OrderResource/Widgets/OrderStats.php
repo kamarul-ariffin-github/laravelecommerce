@@ -11,12 +11,19 @@ class OrderStats extends BaseWidget
 {
     protected function getStats(): array
     {
-        return [
-            // Stat::make('New Order', Order::query()->where('status', 'new')->count()),
-            Stat::make('Order Processing', Order::query()->where('status', 'processing')->count()),
+        $stats = [
+            Stat::make('New Order', Order::query()->where('status', 'new')->count()),
             Stat::make('Order Shipped', Order::query()->where('status', 'shipped')->count()),
             Stat::make('Order Delivered', Order::query()->where('status', 'delivered')->count()),
-            Stat::make('Average Price', Number::currency(Order::query()->avg('grand_total'), 'MYR')),
         ];
+
+        $averagePrice = Order::query()->avg('grand_total');
+        if ($averagePrice !== null) {
+            $stats[] = Stat::make('Average Price', Number::currency($averagePrice, 'MYR'));
+        } else {
+            $stats[] = Stat::make('Average Price', 'No orders yet');
+        }
+
+        return $stats;
     }
 }
